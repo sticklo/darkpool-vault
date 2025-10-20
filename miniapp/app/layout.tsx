@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { Inter, Source_Code_Pro } from "next/font/google";
 import { RootProvider } from "./rootProvider";
@@ -13,21 +14,23 @@ const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
 });
 
+const frameMetadata = {
+  "fc:frame": "vNext",
+  "fc:frame:image": "https://darkpool-vault.netlify.app/og-image.png",
+  "fc:frame:button:1": "Open DarkPool",
+  "fc:frame:button:1:action": "link",
+  "fc:frame:button:1:target": "https://darkpool-vault.netlify.app",
+};
+
 export const metadata: Metadata = {
   title: "DarkPool Vault - Social DCA on Base",
   description: "Transparent, social, pooled DCA investing on Base via Farcaster",
   openGraph: {
     title: "DarkPool Vault",
     description: "Social DCA investing on Base",
-    images: ["/darkpool-preview.png"],
+    images: ["https://darkpool-vault.netlify.app/og-image.png"],
   },
-  other: {
-    "fc:frame": "vNext",
-    "fc:frame:image": "https://your-domain.vercel.app/api/og",
-    "fc:frame:button:1": "Open DarkPool",
-    "fc:frame:button:1:action": "link",
-    "fc:frame:button:1:target": "https://your-domain.vercel.app",
-  },
+  other: frameMetadata,
 };
 
 export default function RootLayout({
