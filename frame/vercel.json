@@ -1,7 +1,8 @@
 {
-    "functions": {
-      "src/index.tsx": {
-        "runtime": "@vercel/node@3"
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/api"
       }
-    }
+    ]
   }

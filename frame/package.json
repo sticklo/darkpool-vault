@@ -1,7 +1,7 @@
 {
   "name": "frame",
   "version": "1.0.0",
-  "main": "src/index.tsx",
+  "main": "api/index.tsx",
   "scripts": {
     "dev": "frog dev"
   },
