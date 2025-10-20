@@ -11,8 +11,9 @@ const handleRequest = frames(async (ctx) => {
       </div>
     ),
     buttons: [
-      <Button action="post">Deposit</Button>,
+      <Button key="deposit" action="post">Deposit</Button>,
       <Button 
+        key="contract"
         action="link" 
         target="https://base-sepolia.blockscout.com/address/0xB85b0BA54C50738AB362A7947C94DFf20660dD7d"
       >
