@@ -1,14 +1,7 @@
 {
   "name": "frame",
   "version": "1.0.0",
-  
-  "scripts": {
-    "dev": "frog dev"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "type": "module",
   "dependencies": {
     "frog": "^0.18.3",
     "hono": "^4.10.1"
