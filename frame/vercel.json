@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "src/index.tsx": {
+        "runtime": "@vercel/node@3"
+      }
+    }
+  }
