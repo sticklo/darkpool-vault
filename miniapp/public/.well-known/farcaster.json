@@ -8,14 +8,18 @@
     "type": "username",
     "username": "sticklo"
   },
-  "frame": {
-    "version": "vNext",
-    "name": "DarkPool Vault",
-    "iconUrl": "https://darkpool-vault.netlify.app/og-image.png",
-    "homeUrl": "https://darkpool-vault.netlify.app",
+  "miniapp": {
+    "version": "1",
     "imageUrl": "https://darkpool-vault.netlify.app/og-image.png",
-    "buttonTitle": "Open DarkPool",
-    "splashImageUrl": "https://darkpool-vault.netlify.app/og-image.png",
-    "splashBackgroundColor": "#0f172a"
+    "button": {
+      "title": "Open DarkPool",
+      "action": {
+        "type": "launch_miniapp",
+        "url": "https://darkpool-vault.netlify.app",
+        "name": "DarkPool Vault",
+        "splashImageUrl": "https://darkpool-vault.netlify.app/og-image.png",
+        "splashBackgroundColor": "#0f172a"
+      }
+    }
   }
 }

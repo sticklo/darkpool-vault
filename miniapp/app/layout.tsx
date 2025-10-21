@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Inter, Source_Code_Pro } from "next/font/google";
 import { RootProvider } from "./rootProvider";
@@ -16,41 +15,39 @@ const sourceCodePro = Source_Code_Pro({
 
 const miniappMetadata = {
   "fc:miniapp": JSON.stringify({
-    "version": "1",
-    "imageUrl": "https://darkpool-vault.netlify.app/og-image.png",
-    "button": {
-      "title": "Open DarkPool",
-      "action": {
-        "type": "launch_miniapp",
-        "url": "https://darkpool-vault.netlify.app",
-        "name": "DarkPool Vault",
-        "splashImageUrl": "https://darkpool-vault.netlify.app/og-image.png",
-        "splashBackgroundColor": "#0f172a"
-      }
-    }
-  })
+    version: "1",
+    imageUrl: "https://darkpool-vault.netlify.app/og-image.png",
+    button: {
+      title: "Open DarkPool",
+      action: {
+        type: "launch_miniapp",
+        url: "https://darkpool-vault.netlify.app",
+        name: "DarkPool Vault",
+        splashImageUrl: "https://darkpool-vault.netlify.app/og-image.png",
+        splashBackgroundColor: "#0f172a",
+      },
+    },
+  }),
+  // Add additional miniapp meta tags
+  "fc:miniapp:version": "1",
+  "fc:miniapp:image": "https://darkpool-vault.netlify.app/og-image.png",
+  "fc:miniapp:button": "Open DarkPool",
 };
 
-const frameMetadata = {
-  "fc:frame": "vNext",
-  "fc:frame:image": "https://darkpool-vault.netlify.app/og-image.png",
-  "fc:frame:button:1": "Open DarkPool",
-  "fc:frame:button:1:action": "link",
-  "fc:frame:button:1:target": "https://darkpool-vault.netlify.app",
-};
+// Removed frame metadata to avoid conflicts with miniapp
 
 export const metadata: Metadata = {
   title: "DarkPool Vault - Social DCA on Base",
-  description: "Transparent, social, pooled DCA investing on Base via Farcaster",
+  description:
+    "Transparent, social, pooled DCA investing on Base via Farcaster",
   openGraph: {
     title: "DarkPool Vault",
     description: "Social DCA investing on Base",
     images: ["https://darkpool-vault.netlify.app/og-image.png"],
   },
   other: {
-    ...frameMetadata,
     ...miniappMetadata,
-  }
+  },
 };
 
 export default function RootLayout({
