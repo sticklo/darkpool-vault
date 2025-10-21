@@ -1,13 +1,23 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import styles from "./page.module.css";
 import { Wallet } from "@coinbase/onchainkit/wallet";
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import {
+  useAccount,
+  useReadContract,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 import { parseUnits, formatUnits } from "viem";
-import { VAULT_ADDRESS, VAULT_ABI, USDC_ADDRESS, USDC_ABI } from "../lib/contract";
+import {
+  VAULT_ADDRESS,
+  VAULT_ABI,
+  USDC_ADDRESS,
+  USDC_ABI,
+} from "../lib/contract";
 
 export default function Home() {
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isSuccess } = useWaitForTransactionReceipt({ hash });
 
@@ -70,12 +80,10 @@ export default function Home() {
       <header className={styles.headerWrapper}>
         <Wallet />
       </header>
-      
+
       <div className={styles.content}>
         <h1 className={styles.title}>DarkPool Vault</h1>
-        <p className={styles.subtitle}>
-          Social DCA investing on Base
-        </p>
+        <p className={styles.subtitle}>Social DCA investing on Base</p>
 
         <div className={styles.statsCard}>
           <div className={styles.stat}>
@@ -91,9 +99,9 @@ export default function Home() {
         <div className={styles.depositCard}>
           <h2>Deposit to Vault</h2>
           <p>Deposit 10 USDC to the DarkPool vault</p>
-          
+
           <div className={styles.buttonGroup}>
-            <button 
+            <button
               onClick={handleApprove}
               disabled={!isConnected || isPending}
               className={styles.approveButton}
@@ -101,7 +109,7 @@ export default function Home() {
               {isPending ? "Approving..." : "1. Approve USDC"}
             </button>
 
-            <button 
+            <button
               onClick={handleDeposit}
               disabled={!isConnected || isPending}
               className={styles.depositButton}
@@ -110,9 +118,11 @@ export default function Home() {
             </button>
           </div>
 
-          {isSuccess && <p className={styles.success}>✅ Deposit successful!</p>}
+          {isSuccess && (
+            <p className={styles.success}>✅ Deposit successful!</p>
+          )}
 
-          <a 
+          <a
             href="https://base-sepolia.blockscout.com/address/0xB85b0BA54C50738AB362A7947C94DFf20660dD7d"
             target="_blank"
             rel="noreferrer"
