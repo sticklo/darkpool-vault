@@ -1,11 +1,21 @@
 export async function GET() {
-    const manifest = {
+  const manifest = {
+    name: "DarkPool Vault",
+    description: "Social DCA investing on Base",
+    iconUrl: "https://darkpool-vault.netlify.app/og-image.png",
+    homeUrl: "https://darkpool-vault.netlify.app",
+    version: "1.0.0",
+    frame: {
+      version: "vNext",
       name: "DarkPool Vault",
-      description: "Social DCA investing on Base",
       iconUrl: "https://darkpool-vault.netlify.app/og-image.png",
       homeUrl: "https://darkpool-vault.netlify.app",
-      version: "1.0.0"
-    };
-    
-    return Response.json(manifest);
-  }
+      imageUrl: "https://darkpool-vault.netlify.app/og-image.png",
+      buttonTitle: "Open DarkPool",
+      splashImageUrl: "https://darkpool-vault.netlify.app/og-image.png",
+      splashBackgroundColor: "#0f172a",
+    },
+  };
+
+  return Response.json(manifest);
+}

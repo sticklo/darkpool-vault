@@ -15,6 +15,7 @@ import {
   USDC_ADDRESS,
   USDC_ABI,
 } from "../lib/contract";
+import { sdk } from "@farcaster/miniapp-sdk";
 
 export default function Home() {
   const { isConnected } = useAccount();
@@ -33,6 +34,20 @@ export default function Home() {
       refetch();
     }
   }, [isSuccess, refetch]);
+
+  // Initialize Farcaster miniapp SDK
+  useEffect(() => {
+    const initMiniapp = async () => {
+      try {
+        await sdk.actions.ready();
+        console.log("Farcaster miniapp ready");
+      } catch (error) {
+        console.log("Not running in Farcaster miniapp context:", error);
+      }
+    };
+
+    initMiniapp();
+  }, []);
 
   const handleApprove = async () => {
     if (!isConnected) {
