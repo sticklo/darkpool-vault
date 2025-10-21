@@ -1,0 +1,11 @@
+export async function GET() {
+    const manifest = {
+      name: "DarkPool Vault",
+      description: "Social DCA investing on Base",
+      iconUrl: "https://darkpool-vault.netlify.app/og-image.png",
+      homeUrl: "https://darkpool-vault.netlify.app",
+      version: "1.0.0"
+    };
+    
+    return Response.json(manifest);
+  }

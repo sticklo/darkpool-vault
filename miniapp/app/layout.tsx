@@ -14,6 +14,23 @@ const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
 });
 
+const miniappMetadata = {
+  "fc:miniapp": JSON.stringify({
+    "version": "1",
+    "imageUrl": "https://darkpool-vault.netlify.app/og-image.png",
+    "button": {
+      "title": "Open DarkPool",
+      "action": {
+        "type": "launch_miniapp",
+        "url": "https://darkpool-vault.netlify.app",
+        "name": "DarkPool Vault",
+        "splashImageUrl": "https://darkpool-vault.netlify.app/og-image.png",
+        "splashBackgroundColor": "#0f172a"
+      }
+    }
+  })
+};
+
 const frameMetadata = {
   "fc:frame": "vNext",
   "fc:frame:image": "https://darkpool-vault.netlify.app/og-image.png",
@@ -30,7 +47,10 @@ export const metadata: Metadata = {
     description: "Social DCA investing on Base",
     images: ["https://darkpool-vault.netlify.app/og-image.png"],
   },
-  other: frameMetadata,
+  other: {
+    ...frameMetadata,
+    ...miniappMetadata,
+  }
 };
 
 export default function RootLayout({

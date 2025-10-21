@@ -1,14 +1,17 @@
+
 .container {
   min-height: 100vh;
   background: linear-gradient(to bottom, #0f172a, #1e293b);
   color: white;
   padding: 20px;
+  padding-bottom: 100px;
 }
 
 .headerWrapper {
   display: flex;
   justify-content: flex-end;
   padding: 20px 0;
+  margin-bottom: 20px;
 }
 
 .content {
@@ -37,6 +40,7 @@
   gap: 20px;
   justify-content: center;
   margin: 40px 0;
+  flex-wrap: wrap;
 }
 
 .stat {
@@ -44,6 +48,7 @@
   padding: 20px 40px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 200px;
 }
 
 .statLabel {
@@ -65,6 +70,7 @@
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .depositCard h2 {
@@ -77,21 +83,57 @@
   margin-bottom: 30px;
 }
 
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.approveButton,
 .depositButton {
   width: 100%;
   padding: 16px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
-  background: linear-gradient(to right, #3b82f6, #8b5cf6);
-  border: none;
   border-radius: 12px;
   color: white;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  border: none;
 }
 
-.depositButton:hover {
+.approveButton {
+  background: rgba(59, 130, 246, 0.3);
+  border: 2px solid #3b82f6;
+}
+
+.approveButton:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.5);
   transform: scale(1.02);
+}
+
+.depositButton {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+}
+
+.depositButton:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.approveButton:disabled,
+.depositButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.success {
+  color: #10b981;
+  font-weight: bold;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 8px;
 }
 
 .viewContract {
