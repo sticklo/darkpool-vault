@@ -5,6 +5,10 @@ export async function GET() {
     iconUrl: "https://darkpool-vault.netlify.app/og-image.png",
     homeUrl: "https://darkpool-vault.netlify.app",
     version: "1.0.0",
+    accountAssociation: {
+      type: "username",
+      username: "sticklo", 
+    },
     frame: {
       version: "vNext",
       name: "DarkPool Vault",
