@@ -6,22 +6,23 @@ export async function GET() {
     homeUrl: "https://darkpool-vault.netlify.app",
     version: "1.0.0",
     accountAssociation: {
-      type: "username",
-      username: "sticklo",
+      header:
+        "eyJmaWQiOjg3NDY2MSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDI1RTBkNzVFYTNmOUExYUE5MzUwY2JFMGVBYjA2NkVENTBhQjRjYzkifQ",
+      payload: "eyJkb21haW4iOiJkYXJrcG9vbC12YXVsdC5uZXRsaWZ5LmFwcCJ9",
+      signature:
+        "X0UCvOqUWLGUymMuyQmvyHff3Wr6zmDOUQS6o2X9bWcG7dk7k1VjKXfPQkkqcu+jvauGfJpFEOsPUxFREudAYhs=",
     },
     miniapp: {
       version: "1",
+      name: "DarkPool Vault",
+      iconUrl: "https://darkpool-vault.netlify.app/og-image.png",
+      homeUrl: "https://darkpool-vault.netlify.app",
       imageUrl: "https://darkpool-vault.netlify.app/og-image.png",
-      button: {
-        title: "Open DarkPool",
-        action: {
-          type: "launch_miniapp",
-          url: "https://darkpool-vault.netlify.app",
-          name: "DarkPool Vault",
-          splashImageUrl: "https://darkpool-vault.netlify.app/og-image.png",
-          splashBackgroundColor: "#0f172a",
-        },
-      },
+      buttonTitle: "Open DarkPool",
+      splashImageUrl: "https://darkpool-vault.netlify.app/og-image.png",
+      splashBackgroundColor: "#0f172a",
+      requiredChains: ["eip155:8453"], // Base chain
+      requiredCapabilities: ["wallet.getEthereumProvider"],
     },
   };
 
