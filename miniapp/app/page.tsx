@@ -1,4 +1,5 @@
 "use client";
+import "@coinbase/onchainkit/styles.css";
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import {
@@ -8,7 +9,7 @@ import {
   WalletDropdownDisconnect,
 } from "@coinbase/onchainkit/wallet";
 import { Address, Avatar, Name, Identity } from "@coinbase/onchainkit/identity";
-// import { colors} from '@coinbase/onchainkit/theme';
+
 import {
   useAccount,
   useReadContract,
