@@ -6,13 +6,8 @@ import {
   Wallet,
   WalletDropdown,
   WalletDropdownDisconnect,
-} from '@coinbase/onchainkit/wallet';
-import {
-  Address,
-  Avatar,
-  Name,
-  Identity,
-} from '@coinbase/onchainkit/identity';
+} from "@coinbase/onchainkit/wallet";
+import { Address, Avatar, Name, Identity } from "@coinbase/onchainkit/identity";
 // import { colors} from '@coinbase/onchainkit/theme';
 import {
   useAccount,
@@ -118,7 +113,7 @@ export default function Home() {
       // Step 1: Approve if needed
       if (needsApproval) {
         setTxStep("approving");
-        const approveHash = await writeContract({
+        await writeContract({
           address: USDC_ADDRESS,
           abi: USDC_ABI,
           functionName: "approve",
@@ -177,19 +172,19 @@ export default function Home() {
       <header className={styles.headerWrapper}>
         {/* <Wallet /> */}
         <Wallet>
-        <ConnectWallet>
-          <Avatar className="h-6 w-6" />
-          <Name />
-        </ConnectWallet>
-        <WalletDropdown>
-          <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-            <Avatar />
+          <ConnectWallet>
+            <Avatar className="h-6 w-6" />
             <Name />
-            <Address />
-          </Identity>
-          <WalletDropdownDisconnect />
-        </WalletDropdown>
-      </Wallet>
+          </ConnectWallet>
+          <WalletDropdown>
+            <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+              <Avatar />
+              <Name />
+              <Address />
+            </Identity>
+            <WalletDropdownDisconnect />
+          </WalletDropdown>
+        </Wallet>
       </header>
 
       <div className={styles.content}>
@@ -266,7 +261,7 @@ export default function Home() {
             </p>
             {needsApproval && (
               <p>
-                🔐 <strong>First time?</strong> You'll need to approve USDC
+                🔐 <strong>First time?</strong> You&apos;ll need to approve USDC
                 spending (one-time)
               </p>
             )}
