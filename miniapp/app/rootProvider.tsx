@@ -23,7 +23,7 @@ const wagmiConfig = createConfig({
   ],
   ssr: true, // Server-side rendering support
   transports: {
-    [baseSepolia.id]: http(), // RPC endpoint
+    [baseSepolia.id]: http("https://sepolia.base.org"), // Public Base Sepolia RPC
   },
 });
 

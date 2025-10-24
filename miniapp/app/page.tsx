@@ -15,6 +15,7 @@ import {
   useReadContract,
   useWriteContract,
   useWaitForTransactionReceipt,
+  useSwitchChain,
 } from "wagmi";
 import { parseUnits, formatUnits } from "viem";
 import {
@@ -24,10 +25,14 @@ import {
   USDC_ABI,
 } from "../lib/contract";
 import { sdk } from "@farcaster/miniapp-sdk";
+import { baseSepolia } from "wagmi/chains";
 
 export default function Home() {
   // Get wallet connection status
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
+
+  // Network switching functionality
+  const { switchChain } = useSwitchChain();
 
   // Handle writing to contracts (approve/deposit)
   const {
@@ -38,9 +43,25 @@ export default function Home() {
   } = useWriteContract();
 
   // Wait for transaction confirmation
-  const { isSuccess, isLoading: isConfirming } = useWaitForTransactionReceipt({
+  const {
+    isSuccess,
+    isLoading: isConfirming,
+    error: receiptError,
+  } = useWaitForTransactionReceipt({
     hash,
+    timeout: 30000, // 30 second timeout
   });
+
+  // Debug transaction state changes
+  useEffect(() => {
+    console.log("Transaction state changed:", {
+      hash,
+      isSuccess,
+      isConfirming,
+      receiptError,
+      writeError,
+    });
+  }, [hash, isSuccess, isConfirming, receiptError, writeError]);
 
   // Track which transaction is happening
   const [txStep, setTxStep] = useState<"idle" | "approving" | "depositing">(
@@ -77,6 +98,12 @@ export default function Home() {
 
   // Auto-refresh stats after successful transaction
   useEffect(() => {
+    console.log("useEffect triggered:", {
+      isSuccess,
+      hash,
+      txStep,
+      isConfirming,
+    });
     if (isSuccess) {
       // Wait 2 seconds for blockchain to update
       setTimeout(() => {
@@ -85,6 +112,31 @@ export default function Home() {
       }, 2000);
     }
   }, [isSuccess, refetch]);
+
+  // Manual transaction check as fallback
+  useEffect(() => {
+    if (hash && txStep === "depositing" && isConfirming) {
+      console.log("Starting manual transaction check...");
+      const checkTransaction = async () => {
+        try {
+          // Wait 10 seconds then check if transaction is still pending
+          setTimeout(async () => {
+            if (isConfirming && !isSuccess) {
+              console.log(
+                "Transaction still pending after 10 seconds, checking manually..."
+              );
+              // You could add manual transaction verification here
+              // For now, let's just log that it's taking too long
+              console.log("Transaction taking longer than expected");
+            }
+          }, 10000);
+        } catch (error) {
+          console.error("Manual transaction check error:", error);
+        }
+      };
+      checkTransaction();
+    }
+  }, [hash, txStep, isConfirming, isSuccess]);
 
   // Initialize Farcaster miniapp SDK
   useEffect(() => {
@@ -100,19 +152,42 @@ export default function Home() {
     initMiniapp();
   }, []);
 
+  // Check if user is on the correct network
+  const isOnCorrectNetwork = chainId === baseSepolia.id;
+
+  // Switch to Base Sepolia if needed
+  const handleSwitchNetwork = async () => {
+    try {
+      await switchChain({ chainId: baseSepolia.id });
+    } catch (error) {
+      console.error("Failed to switch network:", error);
+      alert("Please switch to Base Sepolia testnet manually in your wallet");
+    }
+  };
+
   // Smart deposit handler - handles both approval and deposit automatically
   const handleSmartDeposit = async () => {
+    console.log("handleSmartDeposit called");
     if (!isConnected) {
       alert("Please connect your wallet first!");
       return;
     }
 
+    // Check if user is on the correct network
+    if (!isOnCorrectNetwork) {
+      alert("Please switch to Base Sepolia testnet to use this app!");
+      await handleSwitchNetwork();
+      return;
+    }
+
     const depositAmount = parseUnits("10", 6); // 10 USDC with 6 decimals
     const needsApproval = !currentAllowance || currentAllowance < depositAmount;
+    console.log("needsApproval:", needsApproval);
 
     try {
-      // Step 1: Approve if needed
       if (needsApproval) {
+        // Step 1: Approve
+        console.log("Starting approval...");
         setTxStep("approving");
         await writeContract({
           address: USDC_ADDRESS,
@@ -120,21 +195,36 @@ export default function Home() {
           functionName: "approve",
           args: [VAULT_ADDRESS, depositAmount],
         });
+        console.log("Approval transaction submitted");
 
-        // Wait for approval to complete
-        await new Promise((resolve) => {
-          const checkApproval = () => {
-            if (isSuccess) {
-              resolve(true);
-            } else {
-              setTimeout(checkApproval, 1000);
-            }
-          };
-          checkApproval();
-        });
+        // Wait for approval to complete, then proceed to deposit
+        const checkApproval = () => {
+          return new Promise((resolve) => {
+            const interval = setInterval(() => {
+              console.log("Checking approval:", { isSuccess, hash });
+              if (isSuccess) {
+                clearInterval(interval);
+                resolve(true);
+              }
+            }, 1000);
+
+            // Timeout after 60 seconds
+            setTimeout(() => {
+              clearInterval(interval);
+              resolve(false);
+            }, 60000);
+          });
+        };
+
+        const approvalCompleted = await checkApproval();
+        if (!approvalCompleted) {
+          throw new Error("Approval timeout");
+        }
+        console.log("Approval completed, proceeding to deposit");
       }
 
       // Step 2: Deposit
+      console.log("Starting deposit...");
       setTxStep("depositing");
       await writeContract({
         address: VAULT_ADDRESS,
@@ -142,6 +232,7 @@ export default function Home() {
         functionName: "deposit",
         args: [depositAmount],
       });
+      console.log("Deposit transaction submitted");
     } catch (error) {
       console.error("Smart deposit error:", error);
       setTxStep("idle");
@@ -210,6 +301,18 @@ export default function Home() {
         {isConnected && (
           <div className={styles.userStats}>
             <p>Your USDC Balance: {userUsdcBalance} USDC</p>
+            {!isOnCorrectNetwork && (
+              <div className={styles.error}>
+                ⚠️ Please switch to Base Sepolia testnet to use this app!
+                <br />
+                <button
+                  onClick={handleSwitchNetwork}
+                  className={styles.switchButton}
+                >
+                  Switch to Base Sepolia
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -222,12 +325,14 @@ export default function Home() {
           <div className={styles.buttonGroup}>
             <button
               onClick={handleSmartDeposit}
-              disabled={!isConnected || isProcessing}
+              disabled={!isConnected || isProcessing || !isOnCorrectNetwork}
               className={
                 needsApproval ? styles.approveButton : styles.depositButton
               }
             >
-              {getButtonText()}
+              {!isOnCorrectNetwork
+                ? "Switch to Base Sepolia First"
+                : getButtonText()}
             </button>
           </div>
 

@@ -212,6 +212,24 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+/* Switch network button */
+.switchButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.switchButton:hover {
+  background: #2563eb;
+}
+
 /* Info box */
 .info {
   background: rgba(96, 165, 250, 0.1);
